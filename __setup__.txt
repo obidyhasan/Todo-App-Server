@@ -4,3 +4,8 @@
 4. npm i -g typescript
 5. tsc --init
 6. npm i --save-dev @types/express
+7. tsc -w
+8. npm i -g nodemon
+9. npm i -D nodemon
+10. "dev": "nodemon ./dist/app/server.js",
+11. npm run dev

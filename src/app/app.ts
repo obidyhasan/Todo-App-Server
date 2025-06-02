@@ -1,8 +1,15 @@
 import express, { Application, Request, Response } from "express";
+import fs from "fs";
+import path from "path";
+import { todoRouter } from "./todos/todo.routers";
 const app: Application = express();
 
+// Middleware
+app.use(express.json());
+app.use("/todos", todoRouter);
+
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World");
+  res.send("Welcome to the Todo app server");
 });
 
 export default app;
