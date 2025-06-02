@@ -1,37 +1,42 @@
 import express, { Request, Response } from "express";
 import path from "path";
-import fs from "fs";
+import { client } from "../config/mongodb";
+import { ObjectId } from "mongodb";
 
 export const todoRouter = express.Router();
-
 const filePath = path.join(__dirname, "../../../db/todo.json");
 
-todoRouter.get("/", (req: Request, res: Response) => {
-  const data = fs.readFileSync(filePath, { encoding: "utf-8" });
-  res.json(data);
+const todoCollection = client.db("todoDB").collection("todo");
+
+todoRouter.get("/", async (req: Request, res: Response) => {
+  const todo = await todoCollection.find({}).toArray();
+  res.send(todo);
 });
 
-todoRouter.post("/create-todo", (req: Request, res: Response) => {
-  const { title, body } = req.body;
-  console.log({ title, body });
-  res.send("Created Todo");
+todoRouter.post("/create-todo", async (req: Request, res: Response) => {
+  const todo = req.body;
+  const result = await todoCollection.insertOne(todo);
+  res.send(result);
 });
 
-todoRouter.get("/:title", (req: Request, res: Response) => {
-  const { title } = req.params;
-  console.log({ title });
-  res.send("Get Single Value");
+todoRouter.get("/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await todoCollection.findOne({ _id: new ObjectId(id) });
+  res.send(result);
 });
 
-todoRouter.patch("/update-todo", (req: Request, res: Response) => {
-  const { title } = req.query;
-  const body = req.body;
-  console.log({ title, body });
-  res.send("Updated todo");
+todoRouter.patch("/update-todo/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { title, body, isCompleted } = req.body;
+  const result = await todoCollection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { title, body, isCompleted } }
+  );
+  res.send(result);
 });
 
-todoRouter.delete("/delete-todo", (req: Request, res: Response) => {
-  const { title } = req.query;
-  console.log({ title });
-  res.send("deleted todo");
+todoRouter.delete("/delete-todo/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await todoCollection.deleteOne({ _id: new ObjectId(id) });
+  res.send(result);
 });

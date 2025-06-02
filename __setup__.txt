@@ -9,3 +9,4 @@
 9. npm i -D nodemon
 10. "dev": "nodemon ./dist/app/server.js",
 11. npm run dev
+12. npm i mongodb
