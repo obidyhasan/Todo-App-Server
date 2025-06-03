@@ -74,25 +74,17 @@ git clone https://github.com/your-username/todo-app-server.git
 npm install
 ```
 
-### 3️⃣ Configure MongoDB
-
-In `src/config/mongodb.ts`, the MongoDB URI is already set:
-
-```bash
-mongodb+srv://todo:todo@cluster0.0m3jt.mongodb.net/todoDB
-```
-
 If you want to use your own database:
 
 - Replace the `uri` value with your MongoDB connection string.
 
-### 4️⃣ Build (optional, if you set up TypeScript build)
+### 3️⃣ Build (optional, if you set up TypeScript build)
 
 ```bash
 npx tsc
 ```
 
-### 5️⃣ Start the server
+### 4️⃣ Start the server
 
 ```bash
 npm run dev
